@@ -6,10 +6,6 @@ services:
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
-    disk:
-      name: pnl-data
-      mountPath: /opt/render/project/src/backend/data
-      sizeGB: 1
     envVars:
       - key: BINANCE_API_KEY
         sync: false
@@ -21,7 +17,6 @@ services:
         sync: false
       - key: DB_PATH
         value: ./data/pnl.db
-
   - type: worker
     name: pnl-tracker-bot
     runtime: python
