@@ -17,7 +17,6 @@ services:
         sync: false
       - key: DB_PATH
         value: ./data/pnl.db
-
   - type: worker
     name: pnl-tracker-bot
     runtime: python
