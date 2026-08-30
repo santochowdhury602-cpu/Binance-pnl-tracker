@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: pnl-tracker-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    disk:
+      name: pnl-data
+      mountPath: /opt/render/project/src/backend/data
+      sizeGB: 1
+    envVars:
+      - key: BINANCE_API_KEY
+        sync: false
+      - key: BINANCE_API_SECRET
+        sync: false
+      - key: SPOT_SYMBOLS
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: DB_PATH
+        value: ./data/pnl.db
+
+  - type: worker
+    name: pnl-tracker-bot
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python telegram_bot.py
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: WEBAPP_URL
+        sync: false
